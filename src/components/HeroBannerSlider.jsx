@@ -139,28 +139,9 @@ export default function HeroBannerSlider({ onOpenQuote, onNavigate }) {
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
       aria-label="Hero Product Banner Slider"
-      style={{
-        position: 'relative',
-        minHeight: '620px',
-        display: 'flex',
-        alignItems: 'center',
-        overflow: 'hidden',
-        background: '#050912',
-        marginTop: 0,
-        clear: 'both',
-        padding: '90px 0 96px',
-        userSelect: 'none'
-      }}
     >
       {/* Background Images with smooth, crisp crossfade transition (no blur or dark dip) */}
-      <div 
-        style={{ 
-          position: 'absolute', 
-          inset: 0, 
-          zIndex: 1, 
-          overflow: 'hidden' 
-        }}
-      >
+      <div className="hero-slider-bg-layer">
         {SLIDES.map((slide, idx) => {
           const isActive = idx === currentIndex;
           return (
@@ -172,50 +153,25 @@ export default function HeroBannerSlider({ onOpenQuote, onNavigate }) {
                 zIndex: isActive ? 2 : 1
               }}
               transition={{ duration: 0.6, ease: 'easeInOut' }}
-              style={{
-                position: 'absolute',
-                inset: 0,
-                width: '100%',
-                height: '100%',
-                pointerEvents: 'none'
-              }}
+              className="hero-slide-img-wrap"
             >
               <img 
                 src={slide.image} 
                 alt={slide.titleHighlight}
                 loading={idx === 0 ? 'eager' : 'lazy'}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  objectPosition: 'center',
-                  filter: 'brightness(1.02) contrast(1.04)'
-                }}
+                className="hero-slide-img"
               />
             </motion.div>
           );
         })}
       </div>
 
-      {/* Balanced Gradient Overlays: Keeps images bright, colorful & visible while maintaining readability */}
-      <div 
-        style={{ 
-          position: 'absolute', 
-          inset: 0, 
-          background: 'linear-gradient(90deg, rgba(6, 14, 28, 0.72) 0%, rgba(6, 14, 28, 0.42) 48%, rgba(6, 14, 28, 0.12) 100%)', 
-          zIndex: 2 
-        }}
-      />
-      <div 
-        style={{ 
-          position: 'absolute', 
-          inset: 0, 
-          background: 'linear-gradient(180deg, rgba(6, 14, 28, 0.28) 0%, transparent 40%, rgba(6, 14, 28, 0.38) 100%)', 
-          zIndex: 2 
-        }}
-      />
+      {/* Balanced High-Contrast Gradient Overlays */}
+      <div className="hero-overlay-layer hero-overlay-h" />
+      <div className="hero-overlay-layer hero-overlay-v" />
+      <div className="hero-overlay-layer hero-overlay-mobile-veil" />
 
-      {/* Left Navigation Arrow Button */}
+      {/* Left Navigation Arrow Button (Desktop Only) */}
       <button
         onClick={prevSlide}
         aria-label="Previous Slide"
@@ -302,16 +258,8 @@ export default function HeroBannerSlider({ onOpenQuote, onNavigate }) {
       </button>
 
       {/* Main Slide Content Container */}
-      <div 
-        className="container hero-slider-container" 
-        style={{ 
-          position: 'relative', 
-          zIndex: 5,
-          paddingLeft: 'clamp(54px, 6vw, 84px)',
-          paddingRight: 'clamp(54px, 6vw, 84px)'
-        }}
-      >
-        <div style={{ maxWidth: '840px' }}>
+      <div className="container hero-slider-container">
+        <div className="hero-slide-content-wrapper">
           
           <AnimatePresence mode="wait">
             <motion.div
@@ -320,34 +268,23 @@ export default function HeroBannerSlider({ onOpenQuote, onNavigate }) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -16 }}
               transition={{ duration: 0.45, ease: 'easeOut' }}
+              className="hero-slide-content-card"
             >
               {/* Top Tagline Badge */}
-              <div style={{ marginBottom: '18px' }}>
+              <div className="hero-slide-badge-wrap">
                 <span 
+                  className="hero-slide-badge"
                   style={{ 
-                    display: 'inline-flex', 
-                    alignItems: 'center', 
-                    gap: '8px', 
-                    background: 'rgba(7, 16, 32, 0.85)', 
                     border: `1px solid ${currentSlide.badgeColor}66`, 
-                    backdropFilter: 'blur(12px)', 
-                    padding: '6px 16px', 
-                    borderRadius: '100px', 
-                    fontSize: '13px', 
-                    fontWeight: 700, 
                     color: currentSlide.badgeColor,
-                    boxShadow: '0 4px 18px rgba(0,0,0,0.35)'
                   }}
                 >
                   <BadgeIcon size={15} color={currentSlide.badgeColor} />
                   <span>{currentSlide.badgeText}</span>
                   <span 
+                    className="hero-badge-dot"
                     style={{ 
-                      width: '6px', 
-                      height: '6px', 
-                      borderRadius: '50%', 
                       background: currentSlide.badgeColor, 
-                      display: 'inline-block', 
                       boxShadow: `0 0 8px ${currentSlide.badgeColor}` 
                     }}
                   />
@@ -355,49 +292,22 @@ export default function HeroBannerSlider({ onOpenQuote, onNavigate }) {
               </div>
 
               {/* Main Hero Heading */}
-              <h1 
-                style={{ 
-                  fontFamily: 'var(--font-h, Outfit, sans-serif)', 
-                  fontSize: 'clamp(30px, 5vw, 52px)', 
-                  fontWeight: 900, 
-                  color: '#ffffff', 
-                  lineHeight: 1.14, 
-                  marginBottom: '18px', 
-                  letterSpacing: '-0.5px',
-                  textShadow: '0 4px 28px rgba(0,0,0,0.7)' 
-                }}
-              >
-                {currentSlide.titleMain} <br />
-                <span 
-                  style={{ 
-                    background: 'linear-gradient(135deg, #FFFFFF 10%, #BAE6FD 50%, #38BDF8 100%)', 
-                    WebkitBackgroundClip: 'text', 
-                    WebkitTextFillColor: 'transparent' 
-                  }}
-                >
+              <h1 className="hero-slide-heading">
+                {currentSlide.titleMain} <span className="hero-desktop-break"><br /></span>
+                <span className="hero-heading-highlight">
                   {currentSlide.titleHighlight}
                 </span>
               </h1>
 
               {/* Subtitle / Paragraph */}
-              <p 
-                style={{ 
-                  fontFamily: 'var(--font-b, Inter, sans-serif)', 
-                  fontSize: 'clamp(15px, 2vw, 17px)', 
-                  color: 'rgba(255, 255, 255, 0.92)', 
-                  lineHeight: 1.62, 
-                  marginBottom: '28px', 
-                  maxWidth: '700px', 
-                  textShadow: '0 2px 12px rgba(0,0,0,0.55)' 
-                }}
-              >
+              <p className="hero-slide-desc">
                 {currentSlide.description}
               </p>
 
               {/* CTA Action Buttons */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap' }}>
+              <div className="hero-cta-button-group">
                 <button 
-                  className="btn btn-primary" 
+                  className="btn btn-primary hero-btn-main" 
                   onClick={() => {
                     if (currentSlide.primaryTarget === 'contact') {
                       onOpenQuote ? onOpenQuote() : onNavigate('contact');
@@ -405,46 +315,19 @@ export default function HeroBannerSlider({ onOpenQuote, onNavigate }) {
                       onNavigate ? onNavigate(currentSlide.primaryTarget) : null;
                     }
                   }}
-                  style={{ 
-                    padding: '14px 30px', 
-                    fontSize: '15px', 
-                    fontWeight: 700,
-                    display: 'inline-flex', 
-                    alignItems: 'center', 
-                    gap: '8px', 
-                    boxShadow: '0 8px 24px rgba(14, 165, 233, 0.4)',
-                    borderRadius: '8px',
-                    cursor: 'pointer',
-                    transition: 'all 0.25s ease'
-                  }}
                 >
                   <span>{currentSlide.primaryBtnText}</span>
                   <ArrowRight size={18} />
                 </button>
 
                 <button 
-                  className="btn-outline" 
+                  className="btn-outline hero-btn-sub" 
                   onClick={() => {
                     if (currentSlide.secondaryTarget === 'contact') {
                       onOpenQuote ? onOpenQuote() : onNavigate('contact');
                     } else {
                       onNavigate ? onNavigate(currentSlide.secondaryTarget) : null;
                     }
-                  }}
-                  style={{ 
-                    color: '#ffffff', 
-                    borderColor: 'rgba(255,255,255,0.4)', 
-                    background: 'rgba(255,255,255,0.1)', 
-                    backdropFilter: 'blur(10px)',
-                    padding: '13px 26px', 
-                    fontSize: '15px', 
-                    fontWeight: 600, 
-                    borderRadius: '8px',
-                    display: 'inline-flex', 
-                    alignItems: 'center', 
-                    gap: '8px',
-                    cursor: 'pointer',
-                    transition: 'all 0.25s ease'
                   }}
                 >
                   <FileText size={16} color="var(--gold, #F59E0B)" />
@@ -458,24 +341,7 @@ export default function HeroBannerSlider({ onOpenQuote, onNavigate }) {
       </div>
 
       {/* Slide Indicators & Thumbnails Bar */}
-      <div 
-        style={{
-          position: 'absolute',
-          bottom: '22px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          zIndex: 10,
-          display: 'flex',
-          alignItems: 'center',
-          gap: '10px',
-          background: 'rgba(7, 16, 32, 0.72)',
-          padding: '8px 18px',
-          borderRadius: '100px',
-          border: '1px solid rgba(255, 255, 255, 0.18)',
-          backdropFilter: 'blur(10px)',
-          boxShadow: '0 4px 20px rgba(0,0,0,0.3)'
-        }}
-      >
+      <div className="hero-indicators-bar">
         {SLIDES.map((slide, index) => {
           const isActive = index === currentIndex;
           return (

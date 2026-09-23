@@ -1,52 +1,97 @@
 import React from 'react';
-import { MapPin, Phone, Mail, Facebook, Instagram, Linkedin, MessageCircle } from 'lucide-react';
+import { MapPin, Phone, Mail, Facebook, Instagram, Linkedin, MessageCircle, Sparkles } from 'lucide-react';
 
 export default function HeaderTop() {
   return (
-    <div 
-      className="header-top-section" 
-      style={{ 
-        background: 'var(--navy-dark)', 
-        color: '#ffffff', 
-        padding: '8px 0', 
-        fontSize: '13px', 
-        borderBottom: '1px solid rgba(255,255,255,0.1)' 
-      }}
-    >
-      <div className="container">
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px 16px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
-            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', color: 'rgba(255,255,255,0.92)', fontWeight: 500 }}>
-              <MapPin size={14} style={{ color: 'var(--gold)', flexShrink: 0 }} />
-              <span>Rajkot, Gujarat (India)</span>
-            </span>
-            <a href="tel:+919726673414" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', color: 'rgba(255,255,255,0.92)', textDecoration: 'none', fontWeight: 600 }}>
-              <Phone size={14} style={{ color: 'var(--gold)' }} />
-              +91 97266 73414
-            </a>
-            <a href="tel:+919033039649" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', color: 'rgba(255,255,255,0.92)', textDecoration: 'none', fontWeight: 600 }}>
-              <Phone size={14} style={{ color: 'var(--gold)' }} />
-              +91 90330 39649
-            </a>
-          </div>
-          
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-            <a href="mailto:jaliyanexim2706@gmail.com" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', color: 'rgba(255,255,255,0.92)', textDecoration: 'none', fontWeight: 600 }}>
-              <Mail size={14} style={{ color: 'var(--gold)' }} />
-              jaliyanexim2706@gmail.com
-            </a>
-            <div className="header-top-socials d-none-mobile" style={{ display: 'flex', alignItems: 'center', gap: '10px', marginLeft: '6px', borderLeft: '1px solid rgba(255,255,255,0.2)', paddingLeft: '14px' }}>
-              <a href="https://www.facebook.com/profile.php?id=61578547394678" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(255,255,255,0.85)', transition: 'color 0.2s' }} aria-label="Facebook">
-                <Facebook size={14} />
+    <div className="header-top-wrapper">
+      {/* ================= DESKTOP HEADER TOP (>= 769px) ================= */}
+      <div className="header-top-desktop">
+        <div className="container">
+          <div className="header-top-inner">
+            {/* Left: Location & Direct Phone */}
+            <div className="header-top-left">
+              <span className="top-item">
+                <MapPin size={14} className="top-icon gold" />
+                <span>Rajkot, Gujarat (India)</span>
+              </span>
+              <span className="top-divider">|</span>
+              <a href="tel:+919726673414" className="top-item top-link">
+                <Phone size={14} className="top-icon gold" />
+                <span>+91 97266 73414</span>
               </a>
-              <a href="https://www.instagram.com/jaliyan_exim/" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(255,255,255,0.85)', transition: 'color 0.2s' }} aria-label="Instagram">
-                <Instagram size={14} />
-              </a>
-              <a href="https://www.linkedin.com/company/jaliyan-exim/" target="_blank" rel="noopener noreferrer" style={{ color: 'rgba(255,255,255,0.85)', transition: 'color 0.2s' }} aria-label="LinkedIn">
-                <Linkedin size={14} />
+              <span className="top-divider">|</span>
+              <a href="tel:+919033039649" className="top-item top-link">
+                <Phone size={14} className="top-icon gold" />
+                <span>+91 90330 39649</span>
               </a>
             </div>
+
+            {/* Center: Glowing Trust Badge */}
+            <div className="header-top-center">
+              <div className="top-trust-badge">
+                <span className="live-pulse-dot" />
+                <span>🌍 <strong>Jaliyan Exim:</strong> Certified Indian Merchant Exporter</span>
+              </div>
+            </div>
+
+            {/* Right: Email & Socials */}
+            <div className="header-top-right">
+              <a href="mailto:jaliyanexim2706@gmail.com" className="top-item top-link">
+                <Mail size={14} className="top-icon gold" />
+                <span>jaliyanexim2706@gmail.com</span>
+              </a>
+
+              <div className="top-socials">
+                <a href="https://api.whatsapp.com/send?phone=919726673414&text=Hi%20Jaliyan%20Exim!%20I%20would%20like%20to%20enquire%20about%20your%20export%20commodities." target="_blank" rel="noopener noreferrer" className="social-pill whatsapp" title="Chat on WhatsApp">
+                  <MessageCircle size={13} />
+                </a>
+                <a href="https://www.facebook.com/profile.php?id=61578547394678" target="_blank" rel="noopener noreferrer" className="social-pill" title="Facebook">
+                  <Facebook size={13} />
+                </a>
+                <a href="https://www.instagram.com/jaliyan_exim/" target="_blank" rel="noopener noreferrer" className="social-pill" title="Instagram">
+                  <Instagram size={13} />
+                </a>
+                <a href="https://www.linkedin.com/company/jaliyan-exim/" target="_blank" rel="noopener noreferrer" className="social-pill" title="LinkedIn">
+                  <Linkedin size={13} />
+                </a>
+              </div>
+            </div>
           </div>
+        </div>
+      </div>
+
+      {/* ================= MOBILE HEADER TOP (< 769px) ================= */}
+      <div className="header-top-mobile">
+        {/* Tier 1: Announcement Ticker */}
+        <div className="header-mobile-ticker">
+          <div className="ticker-badge">
+            <span className="live-pulse-dot" />
+            <span className="ticker-text">🌍 <strong>Jaliyan Exim:</strong> India to World — Trusted Export Partner 🇮🇳</span>
+          </div>
+        </div>
+
+        {/* Tier 2: Instant Touch Action Chips */}
+        <div className="header-mobile-actions">
+          <a href="tel:+919726673414" className="mobile-action-chip primary" title="Call Sales">
+            <Phone size={13} />
+            <span>+91 97266 73414</span>
+          </a>
+
+          <a href="mailto:jaliyanexim2706@gmail.com" className="mobile-action-chip" title="Email Us">
+            <Mail size={13} />
+            <span>Email</span>
+          </a>
+
+          <a 
+            href="https://api.whatsapp.com/send?phone=919726673414&text=Hi%20Jaliyan%20Exim!%20I%20would%20like%20to%20enquire%20about%20your%20export%20commodities." 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="mobile-action-chip whatsapp"
+            title="WhatsApp"
+          >
+            <MessageCircle size={13} />
+            <span>WhatsApp</span>
+          </a>
         </div>
       </div>
     </div>
