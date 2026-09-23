@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Disallow admin routes from search index
+Disallow: /admin
+Disallow: /*?admin*
+
+Sitemap: https://jaliyanexim.com/sitemap.xml
