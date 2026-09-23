@@ -294,7 +294,10 @@ export default function HeroBannerSlider({ onOpenQuote, onNavigate }) {
               {/* Main Hero Heading */}
               <h1 className="hero-slide-heading">
                 {currentSlide.titleMain} <span className="hero-desktop-break"><br /></span>
-                <span className="hero-heading-highlight">
+                <span 
+                  className="hero-heading-highlight"
+                  style={{ color: currentSlide.badgeColor, WebkitTextFillColor: currentSlide.badgeColor }}
+                >
                   {currentSlide.titleHighlight}
                 </span>
               </h1>
