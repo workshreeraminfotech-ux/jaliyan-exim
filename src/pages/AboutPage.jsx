@@ -1,7 +1,8 @@
-﻿import React from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { Target, Eye, ShieldCheck, CheckCircle2, Globe2, Sparkles, Building2, Factory, TestTube, Package, Ship } from 'lucide-react';
 import AboutUs from '../components/AboutUs';
+import QuantumAbout from '../components/QuantumAbout';
 import CounterSection from '../components/CounterSection';
 import CertificationsSection from '../components/CertificationsSection';
 import CtaBanner from '../components/CtaBanner';
@@ -85,6 +86,8 @@ export default function AboutPage({ onNavigate, onOpenQuote }) {
       {/* Main AboutUs Showcase */}
       <AboutUs />
 
+      {/* Vision, Mission, and Values Section */}
+      <QuantumAbout />
 
       {/* Live Animated Statistics Counter */}
       <CounterSection />

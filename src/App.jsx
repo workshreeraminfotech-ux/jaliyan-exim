@@ -74,13 +74,13 @@ export default function App() {
   };
 
   return (
-    <div>
+    <div className="app-root">
       <Preloader onFinish={() => setIsPreloading(false)} />
-      <HeaderTop />
       <Navbar 
         activePage={activePage} 
         onNavigate={handleNavigate} 
         onOpenQuote={() => handleOpenQuote()} 
+        onOpenCart={() => setIsCartOpen(true)}
       />
 
       <main>

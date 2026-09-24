@@ -1,373 +1,242 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { 
-  Menu, X, ArrowRight, MapPin, Mail, Phone, ChevronDown, ChevronRight,
-  Sparkles, Sprout, Bath, Grid3X3, Wrench, Waves,
-  Package, Box, Leaf, Layers, ShieldCheck, Factory, Truck, Flame, Globe
-} from 'lucide-react';
 import logoImg from '../assets/logo.webp';
-import { getMainCategories } from '../utils/adminStore';
-
-const ICON_MAP = {
-  Sparkles, Sprout, Bath, Grid3X3, Wrench, Waves,
-  Package, Box, Leaf, Layers, ShieldCheck, Factory, Truck, Flame, Globe
-};
+import { Menu, X, ChevronDown, Sparkles, Leaf, Sprout, ArrowRight } from 'lucide-react';
 
 export default function Navbar({ activePage, onNavigate }) {
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [mobileCategoriesOpen, setMobileCategoriesOpen] = useState(true);
-  const [mainCats, setMainCats] = useState(getMainCategories());
-  const dropdownTimeoutRef = useRef(null);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
-    const handleUpdate = () => {
-      setMainCats([...getMainCategories()]);
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
     };
-    window.addEventListener('trishu_store_sync', handleUpdate);
-    window.addEventListener('trishu_store_updated', handleUpdate);
-    return () => {
-      window.removeEventListener('trishu_store_sync', handleUpdate);
-      window.removeEventListener('trishu_store_updated', handleUpdate);
-    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleNav = (id) => {
-    onNavigate(id);
-    setMobileOpen(false);
-    setDropdownOpen(false);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const handleMouseEnter = () => {
-    if (dropdownTimeoutRef.current) {
-      clearTimeout(dropdownTimeoutRef.current);
-    }
-    setDropdownOpen(true);
-  };
-
-  const handleMouseLeave = () => {
-    dropdownTimeoutRef.current = setTimeout(() => {
-      setDropdownOpen(false);
-    }, 200);
-  };
-
-  const dynamicIds = mainCats.map(c => c.id === 'spices' ? 'products' : (c.id === 'pvcpipe' ? 'pvc-pipes' : c.id));
-  const isProductsActive = [
-    'products', 'spices', 'agro', 'dehydrated', ...dynamicIds
-  ].includes(activePage);
-
-  const categories = mainCats.map(cat => {
-    const IconC = ICON_MAP[cat.icon] || Package;
-    const navId = cat.id === 'spices' ? 'products' : (cat.id === 'pvcpipe' ? 'pvc-pipes' : cat.id);
-    return {
-      id: navId,
-      title: cat.name,
-      tag: cat.defaultHs || 'Certified Export',
-      tagColor: cat.color || '#0EA5E9',
-      tagBg: `${cat.color || '#0EA5E9'}18`,
-      desc: cat.defaultPack || 'Export Standard Packing',
-      icon: IconC,
-      iconColor: cat.color || '#0EA5E9',
-      iconBg: `${cat.color || '#0EA5E9'}12`
+  // Close dropdown on click outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setDropdownOpen(false);
+      }
     };
-  });
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleNavClick = (pageId) => {
+    setMobileMenuOpen(false);
+    setDropdownOpen(false);
+    if (pageId.startsWith('#')) {
+      const el = document.querySelector(pageId);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+        return;
+      }
+    }
+    if (onNavigate) {
+      onNavigate(pageId);
+    }
+  };
+
+  const handleDropdownToggle = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDropdownOpen(prev => !prev);
+  };
+
+  const handleScrollToQuote = (e) => {
+    if (e) e.preventDefault();
+    setMobileMenuOpen(false);
+    setDropdownOpen(false);
+    const contactSection = document.getElementById('contact');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' });
+    } else if (onNavigate) {
+      onNavigate('home');
+      setTimeout(() => {
+        const el = document.getElementById('contact');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }, 300);
+    }
+  };
+
+  const isCategoryActive = ['products', 'spices', 'dehydrated', 'agro'].includes(activePage);
 
   return (
-    <>
-      <header className="jrp-header">
-        <div className="container">
-          <div className="jrp-header-inner" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '104px' }}>
-            {/* Logo */}
-            <a href="#" onClick={(e) => { e.preventDefault(); handleNav('home'); }} style={{ display: 'flex', alignItems: 'center', textDecoration: 'none', border: 'none', outline: 'none' }}>
-              <img 
-                src={logoImg} 
-                alt="Jaliyan Exim" 
-                className="jrp-header-logo-img" 
-                style={{ 
-                  height: '82px', 
-                  width: 'auto', 
-                  objectFit: 'contain',
-                  border: 'none',
-                  outline: 'none',
-                  boxShadow: 'none',
-                  filter: 'none',
-                  display: 'block',
-                  transition: 'transform 0.2s ease'
-                }} 
-              />
+    <header className={`header ${isScrolled ? 'header--scrolled' : ''}`}>
+      <div className="header-container">
+        {/* Brand Logo - 100% visible, sharp & bold on white header */}
+        <a 
+          href="/" 
+          className="logo"
+          onClick={(e) => {
+            e.preventDefault();
+            handleNavClick('home');
+          }}
+          aria-label="Jaliyan Exim Home"
+        >
+          <img 
+            src={logoImg} 
+            alt="Jaliyan Exim - India to World" 
+            className="logo-img" 
+            width="100" 
+            height="80" 
+          />
+        </a>
+
+        {/* Mobile Hamburger Toggle */}
+        <button 
+          className="menu-toggle" 
+          id="menu-toggle-btn" 
+          aria-label="Toggle menu" 
+          aria-expanded={mobileMenuOpen}
+          onClick={() => setMobileMenuOpen(prev => !prev)}
+        >
+          {mobileMenuOpen ? (
+            <X size={26} color="#0f172a" />
+          ) : (
+            <Menu size={26} color="#0f172a" />
+          )}
+        </button>
+
+        {/* Header Menu */}
+        <div className={`header-menu ${mobileMenuOpen ? 'open' : ''}`} id="header-menu-dropdown">
+          <nav className="nav" aria-label="Main Navigation">
+            {/* 1. Home */}
+            <a 
+              href="#home" 
+              className={`nav-link ${activePage === 'home' ? 'active' : ''}`}
+              onClick={(e) => {
+                e.preventDefault();
+                handleNavClick('home');
+              }}
+            >
+              Home
             </a>
 
-            {/* Desktop Navigation Menu */}
-            <nav style={{ display: 'flex', alignItems: 'center', gap: '36px' }} className="d-none-mobile">
-              <a
-                href="#"
-                onClick={(e) => { e.preventDefault(); handleNav('home'); }}
-                style={{ fontWeight: 700, fontSize: '18px', color: activePage === 'home' ? 'var(--gold)' : 'var(--navy)', textDecoration: 'none', transition: 'color 0.2s' }}
+            {/* 2. Category Dropdown: Click to toggle and stays open */}
+            <div 
+              className="nav-dropdown"
+              ref={dropdownRef}
+            >
+              <button 
+                type="button"
+                className={`nav-link nav-dropdown-trigger ${isCategoryActive || dropdownOpen ? 'active' : ''}`}
+                onClick={handleDropdownToggle}
+                aria-expanded={dropdownOpen}
+                aria-haspopup="true"
               >
-                Home
-              </a>
-              
-              <a
-                href="#"
-                onClick={(e) => { e.preventDefault(); handleNav('about'); }}
-                style={{ fontWeight: 700, fontSize: '18px', color: activePage === 'about' ? 'var(--gold)' : 'var(--navy)', textDecoration: 'none', transition: 'color 0.2s' }}
-              >
-                About Us
-              </a>
+                <span>Categories</span>
+                <ChevronDown 
+                  size={15} 
+                  className={`chevron-icon ${dropdownOpen ? 'rotated' : ''}`} 
+                />
+              </button>
 
-              {/* Product Categories Dropdown — Clean Vertical List */}
-              <div 
-                style={{ position: 'relative' }}
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-              >
-                <button
-                  onClick={(e) => { 
-                    e.preventDefault(); 
-                    setDropdownOpen(prev => !prev);
-                  }}
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    padding: '12px 0',
-                    fontFamily: 'inherit',
-                    fontWeight: 700,
-                    fontSize: '18px',
-                    color: isProductsActive ? 'var(--gold)' : 'var(--navy)',
-                    textDecoration: 'none',
-                    transition: 'color 0.2s',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px'
-                  }}
+              {/* Desktop Dropdown Menu */}
+              {dropdownOpen && (
+                <div 
+                  className="nav-dropdown-menu"
+                  onClick={(e) => e.stopPropagation()}
                 >
-                  <span>Product Categories</span>
-                  <ChevronDown 
-                    size={16} 
-                    style={{ 
-                      transition: 'transform 0.25s ease',
-                      transform: dropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-                      color: isProductsActive ? 'var(--gold)' : 'inherit'
-                    }} 
-                  />
-                </button>
-
-                {/* Clean Vertical Dropdown List */}
-                {dropdownOpen && (
-                  <div
-                    style={{
-                      position: 'absolute',
-                      top: '100%',
-                      left: '0',
-                      paddingTop: '8px',
-                      zIndex: 1000,
-                      minWidth: '340px',
-                      animation: 'fadeInSlide 0.2s cubic-bezier(0.16, 1, 0.3, 1)'
+                  {/* 1. Spices & Seasonings */}
+                  <a 
+                    href="#spices" 
+                    className={`nav-dropdown-item ${activePage === 'products' || activePage === 'spices' ? 'active' : ''}`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleNavClick('products');
                     }}
                   >
-                    <div
-                      style={{
-                        backgroundColor: '#FFFFFF',
-                        borderRadius: '20px',
-                        padding: '12px 10px',
-                        boxShadow: '0 20px 45px -10px rgba(11, 34, 64, 0.2), 0 0 0 1px rgba(11, 34, 64, 0.08)',
-                        border: '1.5px solid rgba(237, 108, 27, 0.2)',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '4px'
-                      }}
-                    >
-                      {categories.map((cat) => {
-                        const IconComponent = cat.icon;
-                        const isActive = activePage === cat.id;
-
-                        return (
-                          <a
-                            key={cat.id}
-                            href="#"
-                            onClick={(e) => { e.preventDefault(); handleNav(cat.id); }}
-                            style={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'space-between',
-                              gap: '12px',
-                              padding: '10px 14px',
-                              borderRadius: '12px',
-                              textDecoration: 'none',
-                              backgroundColor: isActive ? '#FFF7ED' : 'transparent',
-                              transition: 'all 0.2s ease',
-                              border: isActive ? '1px solid rgba(237, 108, 27, 0.3)' : '1px solid transparent'
-                            }}
-                            onMouseEnter={(e) => {
-                              e.currentTarget.style.backgroundColor = '#FFF7ED';
-                              e.currentTarget.style.transform = 'translateX(4px)';
-                            }}
-                            onMouseLeave={(e) => {
-                              e.currentTarget.style.backgroundColor = isActive ? '#FFF7ED' : 'transparent';
-                              e.currentTarget.style.transform = 'translateX(0)';
-                            }}
-                          >
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                              <div style={{
-                                width: '38px',
-                                height: '38px',
-                                borderRadius: '10px',
-                                backgroundColor: cat.iconBg,
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                flexShrink: 0,
-                                border: '1px solid rgba(0,0,0,0.04)'
-                              }}>
-                                <IconComponent size={19} style={{ color: cat.iconColor }} />
-                              </div>
-                              <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                <span style={{ fontSize: '15px', fontWeight: 800, color: 'var(--navy)', lineHeight: 1.2 }}>
-                                  {cat.title}
-                                </span>
-                                <span style={{ fontSize: '12px', color: 'var(--gray)', fontWeight: 500, marginTop: '2px' }}>
-                                  {cat.desc}
-                                </span>
-                              </div>
-                            </div>
-
-                            <ChevronRight size={16} style={{ color: 'var(--gold)', flexShrink: 0, opacity: 0.8 }} />
-                          </a>
-                        );
-                      })}
+                    <div className="dropdown-item-icon">
+                      <Sparkles size={18} />
                     </div>
-                  </div>
-                )}
-              </div>
+                    <div className="dropdown-item-text">
+                      <span className="dropdown-item-title">Spices &amp; Seasonings</span>
+                      <span className="dropdown-item-desc">Whole &amp; ground certified spices</span>
+                    </div>
+                  </a>
 
+                  {/* 2. Dehydrated Products */}
+                  <a 
+                    href="#dehydrated" 
+                    className={`nav-dropdown-item ${activePage === 'dehydrated' ? 'active' : ''}`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleNavClick('dehydrated');
+                    }}
+                  >
+                    <div className="dropdown-item-icon">
+                      <Leaf size={18} />
+                    </div>
+                    <div className="dropdown-item-text">
+                      <span className="dropdown-item-title">Dehydrated Products</span>
+                      <span className="dropdown-item-desc">Onion, garlic, vegetables &amp; fruit powders</span>
+                    </div>
+                  </a>
 
-
-              <a
-                href="#"
-                onClick={(e) => { e.preventDefault(); handleNav('contact'); }}
-                style={{ fontWeight: 700, fontSize: '18px', color: activePage === 'contact' ? 'var(--gold)' : 'var(--navy)', textDecoration: 'none', transition: 'color 0.2s' }}
-              >
-                Contact Us
-              </a>
-            </nav>
-
-            {/* Actions: CTA + Mobile Toggle */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '18px' }}>
-              <button
-                className="btn btn-primary d-none-mobile"
-                onClick={() => handleNav('contact')}
-                style={{ fontSize: '15px', padding: '12px 24px', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
-              >
-                <span>Request Quote</span>
-                <ArrowRight size={16} />
-              </button>
-
-              <button
-                className="mobile-menu-toggle-btn"
-                onClick={() => setMobileOpen(true)}
-                style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--navy)', padding: '6px' }}
-                aria-label="Toggle Navigation"
-              >
-                <Menu size={28} />
-              </button>
+                  {/* 3. Agro Commodities */}
+                  <a 
+                    href="#agro" 
+                    className={`nav-dropdown-item ${activePage === 'agro' ? 'active' : ''}`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleNavClick('agro');
+                    }}
+                  >
+                    <div className="dropdown-item-icon">
+                      <Sprout size={18} />
+                    </div>
+                    <div className="dropdown-item-text">
+                      <span className="dropdown-item-title">Agro Commodities</span>
+                      <span className="dropdown-item-desc">Sesame seeds, peanuts, grains &amp; pulses</span>
+                    </div>
+                  </a>
+                </div>
+              )}
             </div>
-          </div>
+
+            {/* 3. Quality & Compliance */}
+            <a 
+              href="#certifications" 
+              className="nav-link"
+              onClick={(e) => {
+                e.preventDefault();
+                handleNavClick('#certifications');
+              }}
+            >
+              Quality &amp; Compliance
+            </a>
+
+            {/* 4. Contact */}
+            <a 
+              href="#contact" 
+              className="nav-link"
+              onClick={(e) => {
+                e.preventDefault();
+                handleNavClick('#contact');
+              }}
+            >
+              Contact
+            </a>
+          </nav>
+
+          {/* Request a Quote Button - Scrolls directly to Enquiry form */}
+          <button 
+            type="button"
+            className="btn btn-primary nav-quote-btn"
+            onClick={handleScrollToQuote}
+            aria-label="Request a Quote"
+          >
+            <span>Request a Quote</span>
+            <ArrowRight size={16} />
+          </button>
         </div>
-      </header>
-
-      {/* Offcanvas Drawer */}
-      {mobileOpen && (
-        <>
-          <div className="jrp-offcanvas-overlay" onClick={() => setMobileOpen(false)} />
-          <div className="jrp-offcanvas">
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px' }}>
-              <img src={logoImg} alt="Jaliyan Exim" style={{ height: '64px', width: 'auto', objectFit: 'contain', filter: 'contrast(1.08)' }} />
-              <button onClick={() => setMobileOpen(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--navy)' }}>
-                <X size={24} />
-              </button>
-            </div>
-
-            {/* Mobile Nav Links */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '24px' }}>
-              <a href="#" onClick={(e) => { e.preventDefault(); handleNav('home'); }} style={{ fontWeight: 700, fontSize: '17px', color: activePage === 'home' ? 'var(--gold)' : 'var(--navy)', textDecoration: 'none', padding: '4px 0' }}>Home</a>
-              <a href="#" onClick={(e) => { e.preventDefault(); handleNav('about'); }} style={{ fontWeight: 700, fontSize: '17px', color: activePage === 'about' ? 'var(--gold)' : 'var(--navy)', textDecoration: 'none', padding: '4px 0' }}>About Us</a>
-              
-              {/* Mobile Product Categories Accordion */}
-              <div style={{ borderTop: '1px solid #f0f0f0', borderBottom: '1px solid #f0f0f0', padding: '8px 0' }}>
-                <div 
-                  onClick={() => setMobileCategoriesOpen(prev => !prev)}
-                  style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer', padding: '6px 0' }}
-                >
-                  <span style={{ fontWeight: 800, fontSize: '17px', color: isProductsActive ? 'var(--gold)' : 'var(--navy)' }}>Product Categories</span>
-                  <ChevronDown size={18} style={{ color: 'var(--navy)', transform: mobileCategoriesOpen ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }} />
-                </div>
-                
-                {mobileCategoriesOpen && (
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', paddingLeft: '8px', marginTop: '8px' }}>
-                    {categories.map(cat => {
-                      const IconComp = cat.icon;
-                      const isActive = activePage === cat.id;
-
-                      return (
-                        <a 
-                          key={cat.id}
-                          href="#" 
-                          onClick={(e) => { e.preventDefault(); handleNav(cat.id); }}
-                          style={{ 
-                            display: 'flex', 
-                            alignItems: 'center', 
-                            gap: '10px', 
-                            padding: '8px 10px', 
-                            borderRadius: '8px', 
-                            backgroundColor: isActive ? '#F0F9FF' : '#F8FAFC',
-                            color: isActive ? 'var(--gold)' : 'var(--navy)',
-                            textDecoration: 'none',
-                            fontSize: '14.5px',
-                            fontWeight: 700
-                          }}
-                        >
-                          <IconComp size={16} style={{ color: 'var(--gold)' }} />
-                          <span>{cat.title}</span>
-                        </a>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
-
-
-              <a href="#" onClick={(e) => { e.preventDefault(); handleNav('contact'); }} style={{ fontWeight: 700, fontSize: '17px', color: activePage === 'contact' ? 'var(--gold)' : 'var(--navy)', textDecoration: 'none', padding: '4px 0' }}>Contact Us</a>
-            </div>
-
-            {/* Offcanvas Contact Info */}
-            <div style={{ marginTop: 'auto', borderTop: '1px solid #eee', paddingTop: '16px' }}>
-              <h4 style={{ fontSize: '15px', fontWeight: 800, marginBottom: '12px', color: 'var(--navy)' }}>Contact Info</h4>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '13.5px', color: 'var(--gray)' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <MapPin size={16} style={{ color: 'var(--gold)', flexShrink: 0 }} />
-                  <span>Rajkot, Gujarat, India</span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <Mail size={16} style={{ color: 'var(--gold)', flexShrink: 0 }} />
-                  <span>jaliyanexim2706@gmail.com</span>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <Phone size={16} style={{ color: 'var(--gold)', flexShrink: 0 }} />
-                  <span>+91 97266 73414 / +91 90330 39649</span>
-                </div>
-              </div>
-
-              <div style={{ marginTop: '16px' }}>
-                <button className="btn btn-primary" onClick={() => handleNav('contact')} style={{ width: '100%', justifyContent: 'center' }}>
-                  <span>Get A Quote</span>
-                  <ArrowRight size={16} />
-                </button>
-              </div>
-            </div>
-          </div>
-        </>
-      )}
-    </>
+      </div>
+    </header>
   );
 }

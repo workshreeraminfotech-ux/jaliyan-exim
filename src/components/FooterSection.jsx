@@ -1,151 +1,108 @@
 import React from 'react';
-import { Facebook, Instagram, Linkedin, MessageCircle, ChevronRight, Mail, MapPin, Phone, ArrowUpRight } from 'lucide-react';
 import logoImg from '../assets/logo.webp';
+import { Mail, Phone, MapPin, Globe, ExternalLink } from 'lucide-react';
 
-export default function FooterSection({ onNavigate }) {
+export default function FooterSection({ onNavigate, onOpenQuote }) {
+  const handleNav = (pageId) => {
+    if (pageId.startsWith('#')) {
+      const el = document.querySelector(pageId);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
+    if (onNavigate) onNavigate(pageId);
+  };
+
   return (
-    <footer className="footer-redesign-section">
-      <div className="container">
-        <div className="footer-top-grid">
-          {/* Col 1: Brand & Bio */}
-          <div className="footer-col-brand">
-            <div 
-              className="footer-logo-wrap" 
-              onClick={() => { if (onNavigate) onNavigate('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-            >
-              <img src={logoImg} alt="Jaliyan Exim" />
-            </div>
-            <p className="footer-bio-text">
-              Jaliyan Exim is a premier Indian merchant exporter of Premium Spices, Agro Commodities, and Dehydrated Fruits & Vegetables. Delivering trust, exporting excellence globally.
-            </p>
-            <div className="footer-social-row">
-              <a href="https://www.facebook.com/profile.php?id=61578547394678" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-                <Facebook size={16} />
-              </a>
-              <a href="https://www.instagram.com/jaliyan_exim/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-                <Instagram size={16} />
-              </a>
-              <a href="https://www.linkedin.com/company/jaliyan-exim/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-                <Linkedin size={16} />
-              </a>
-            </div>
+    <footer className="site-footer">
+      <div className="footer-container">
+        {/* Brand */}
+        <div className="footer-brand">
+          <div className="footer-logo-wrapper">
+            <img 
+              src={logoImg} 
+              alt="Jaliyan Exim" 
+              className="footer-logo" 
+              width="240" 
+              height="60" 
+              loading="lazy" 
+            />
           </div>
-
-          {/* Col 2: Navigation Links */}
-          <div className="footer-col">
-            <h3>Quick Links</h3>
-            <ul className="footer-links-list">
-              <li>
-                <a href="#" onClick={(e) => { e.preventDefault(); onNavigate && onNavigate('home'); }}>
-                  <ChevronRight size={14} className="link-arrow" /> Home
-                </a>
-              </li>
-              <li>
-                <a href="#" onClick={(e) => { e.preventDefault(); onNavigate && onNavigate('about'); }}>
-                  <ChevronRight size={14} className="link-arrow" /> About Us
-                </a>
-              </li>
-              <li>
-                <a href="#" onClick={(e) => { e.preventDefault(); onNavigate && onNavigate('products'); }}>
-                  <ChevronRight size={14} className="link-arrow" /> Spices Catalog
-                </a>
-              </li>
-              <li>
-                <a href="#" onClick={(e) => { e.preventDefault(); onNavigate && onNavigate('agro'); }}>
-                  <ChevronRight size={14} className="link-arrow" /> Agro Commodities
-                </a>
-              </li>
-              <li>
-                <a href="#" onClick={(e) => { e.preventDefault(); onNavigate && onNavigate('dehydrated'); }}>
-                  <ChevronRight size={14} className="link-arrow" /> Dehydrated Products
-                </a>
-              </li>
-              <li>
-                <a href="#" onClick={(e) => { e.preventDefault(); onNavigate && onNavigate('contact'); }}>
-                  <ChevronRight size={14} className="link-arrow" /> Contact Us
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Col 3: Product Categories */}
-          <div className="footer-col">
-            <h3>Product Categories</h3>
-            <ul className="footer-links-list">
-              <li>
-                <a href="#" onClick={(e) => { e.preventDefault(); onNavigate && onNavigate('products'); }}>
-                  <ChevronRight size={14} className="link-arrow" /> Whole & Ground Spices
-                </a>
-              </li>
-              <li>
-                <a href="#" onClick={(e) => { e.preventDefault(); onNavigate && onNavigate('agro'); }}>
-                  <ChevronRight size={14} className="link-arrow" /> Rice, Wheat & Grains
-                </a>
-              </li>
-              <li>
-                <a href="#" onClick={(e) => { e.preventDefault(); onNavigate && onNavigate('agro'); }}>
-                  <ChevronRight size={14} className="link-arrow" /> Pulses & Oilseeds
-                </a>
-              </li>
-              <li>
-                <a href="#" onClick={(e) => { e.preventDefault(); onNavigate && onNavigate('dehydrated'); }}>
-                  <ChevronRight size={14} className="link-arrow" /> Dehydrated Onion & Garlic
-                </a>
-              </li>
-              <li>
-                <a href="#" onClick={(e) => { e.preventDefault(); onNavigate && onNavigate('dehydrated'); }}>
-                  <ChevronRight size={14} className="link-arrow" /> Dehydrated Fruits & Veg
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Col 4: Contact Info */}
-          <div className="footer-col">
-            <h3>Contact Us</h3>
-            <div className="footer-contact-list">
-              <div className="footer-contact-item">
-                <MapPin size={18} className="contact-icon" />
-                <span>Rajkot, Gujarat, India</span>
-              </div>
-              <a href="tel:+919726673414" className="footer-contact-item item-link">
-                <Phone size={18} className="contact-icon" />
-                <span>+91 97266 73414</span>
-              </a>
-              <a href="tel:+919033039649" className="footer-contact-item item-link">
-                <Phone size={18} className="contact-icon" />
-                <span>+91 90330 39649</span>
-              </a>
-              <a href="mailto:jaliyanexim2706@gmail.com" className="footer-contact-item item-link">
-                <Mail size={18} className="contact-icon" />
-                <span>jaliyanexim2706@gmail.com</span>
-              </a>
-            </div>
-          </div>
+          <p className="footer-tagline">
+            Jaliyan Exim &mdash; Delivering Trust, Exporting Excellence Worldwide.
+          </p>
+          <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', lineHeight: 1.6, marginTop: '12px' }}>
+            Premier merchant exporter from Gujarat, India. Supplying pure whole spices, ground culinary powders, dehydrated vegetables, and agro commodities worldwide.
+          </p>
         </div>
 
-        {/* Footer Bottom copyright bar */}
-        <div className="footer-bottom-bar">
-          <p>© {new Date().getFullYear()} Jaliyan Exim. All Rights Reserved.</p>
-          <div className="footer-bottom-right">
-            <span>
-              Developed by{' '}
-              <a 
-                href="https://www.matrixtechx.com" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                style={{ color: 'var(--gold)', fontWeight: 800, textDecoration: 'none', transition: 'color 0.2s ease' }}
-                onMouseOver={(e) => e.currentTarget.style.textDecoration = 'underline'}
-                onMouseOut={(e) => e.currentTarget.style.textDecoration = 'none'}
-              >
-                MatrixTechX
-              </a>
-            </span>
+        {/* Products */}
+        <div className="footer-col">
+          <h4>Export Ranges</h4>
+          <a href="#spices" onClick={(e) => { e.preventDefault(); handleNav('products'); }}>Spices &amp; Seasonings</a>
+          <a href="#agro" onClick={(e) => { e.preventDefault(); handleNav('agro'); }}>Agro Commodities</a>
+          <a href="#dehydrated" onClick={(e) => { e.preventDefault(); handleNav('dehydrated'); }}>Dehydrated Products</a>
+          <a href="#seeds" onClick={(e) => { e.preventDefault(); handleNav('agro'); }}>Sesame Seeds &amp; Peanuts</a>
+          <a href="#powders" onClick={(e) => { e.preventDefault(); handleNav('dehydrated'); }}>Food &amp; Spice Powders</a>
+        </div>
+
+        {/* Company */}
+        <div className="footer-col">
+          <h4>Company</h4>
+          <a href="#products" onClick={(e) => { e.preventDefault(); handleNav('products'); }}>All Catalogues</a>
+          <a href="#about" onClick={(e) => { e.preventDefault(); handleNav('#about'); }}>About Jaliyan Exim</a>
+          <a href="#certifications" onClick={(e) => { e.preventDefault(); handleNav('#certifications'); }}>Quality &amp; Compliance</a>
+          <a href="#contact" onClick={(e) => { e.preventDefault(); handleNav('#contact'); }}>Request a Quote (RFQ)</a>
+        </div>
+
+        {/* Contact */}
+        <div className="footer-col">
+          <h4>Contact Us</h4>
+          <p>
+            <strong>Head Office &bull; India</strong><br />
+            Rajkot, Gujarat 360001, India<br />
+            <span style={{ color: 'var(--gold-color)', fontSize: '0.8rem' }}>Mundra &amp; Kandla Port Gateway</span>
+          </p>
+          <p style={{ marginTop: '10px' }}>
+            <a href="mailto:jaliyanexim2706@gmail.com" style={{ color: 'var(--text-light)' }}>
+              jaliyanexim2706@gmail.com
+            </a>
+          </p>
+          <p style={{ display: 'flex', flexDirection: 'column', gap: '5px', marginTop: '6px' }}>
+            <a href="tel:+919726673414" style={{ color: 'var(--gold-color)', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+              +91 97266 73414
+            </a>
+            <a href="tel:+919033039649" style={{ color: 'var(--gold-color)', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+              +91 90330 39649
+            </a>
+          </p>
+        </div>
+      </div>
+
+      {/* Footer Bottom */}
+      <div className="footer-bottom">
+        <div className="footer-bottom-inner">
+          <p className="footer-copyright">&copy; {new Date().getFullYear()} Jaliyan Exim. All rights reserved.</p>
+
+          <div className="footer-developer">
+            <span className="dev-label">Developed by</span>
+            <a 
+              href="https://www.matrixtechx.com/" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="matrixtechx-btn"
+              title="MatrixTechX — Digital & Web Solutions"
+            >
+              <span className="matrix-pulse"></span>
+              <span>MatrixTechX</span>
+              <ExternalLink size={12} className="matrix-arrow" />
+            </a>
           </div>
+
+          <p className="footer-certs">
+            Specifications, laboratory testing, and Certificate of Analysis confirmed per order.
+          </p>
         </div>
       </div>
     </footer>
   );
 }
-
-
