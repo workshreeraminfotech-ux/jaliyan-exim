@@ -21,7 +21,7 @@ export default function Footer() {
               <a href="https://www.linkedin.com/company/jaliyan-exim/" target="_blank" rel="noopener noreferrer" className="social-icon" title="LinkedIn">
                 <Linkedin size={15} />
               </a>
-              <a href="https://www.facebook.com/profile.php?id=61578547394678" target="_blank" rel="noopener noreferrer" className="social-icon" title="Facebook">
+              <a href="https://www.facebook.com/profile.php?id=61593712983337" target="_blank" rel="noopener noreferrer" className="social-icon" title="Facebook">
                 <Facebook size={15} />
               </a>
               <a href="https://api.whatsapp.com/send?phone=919726673414&text=Hi%20Jaliyan%20Exim!" target="_blank" rel="noopener noreferrer" className="social-icon" title="Business WhatsApp">

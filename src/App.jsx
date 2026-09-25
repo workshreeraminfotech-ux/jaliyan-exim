@@ -17,6 +17,7 @@ import AboutPage from './pages/AboutPage';
 import ProductsPage from './pages/ProductsPage';
 import AgroPage from './pages/AgroPage';
 import DehydratedPage from './pages/DehydratedPage';
+import CertificationsPage from './pages/CertificationsPage';
 import ContactPage from './pages/ContactPage';
 
 export default function App() {
@@ -64,7 +65,8 @@ export default function App() {
   }
 
   const handleNavigate = (pageId) => {
-    setActivePage(pageId);
+    const cleanId = typeof pageId === 'string' ? pageId.replace(/^#/, '').toLowerCase() : pageId;
+    setActivePage(cleanId);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -72,6 +74,14 @@ export default function App() {
     setQuoteProduct(productName);
     setIsQuoteOpen(true);
   };
+
+  const isCertifications = activePage === 'certifications' || activePage === 'quality' || activePage === 'compliance' || activePage === 'quality-compliance' || activePage === '#certifications';
+  const isContact = activePage === 'contact' || activePage === '#contact';
+  const isAbout = activePage === 'about' || activePage === '#about';
+  const isProducts = activePage === 'products' || activePage === 'spices' || activePage === '#products' || activePage === '#spices';
+  const isAgro = activePage === 'agro' || activePage === '#agro';
+  const isDehydrated = activePage === 'dehydrated' || activePage === 'dehydrated-products' || activePage === 'dehydrated-fruits-vegetables' || activePage === '#dehydrated';
+  const isHome = activePage === 'home' || activePage === 'faq' || activePage === '#home' || activePage === '' || (!isCertifications && !isContact && !isAbout && !isProducts && !isAgro && !isDehydrated);
 
   return (
     <div className="app-root">
@@ -84,39 +94,44 @@ export default function App() {
       />
 
       <main>
-        {(activePage === 'home' || activePage === 'faq') && (
+        {isHome && (
           <Home 
             onSelectProduct={setSelectedProduct} 
             onNavigate={handleNavigate} 
             onOpenQuote={(prod) => handleOpenQuote(prod)} 
           />
         )}
-        {activePage === 'about' && (
+        {isAbout && (
           <AboutPage 
             onNavigate={handleNavigate} 
             onOpenQuote={() => handleOpenQuote()} 
           />
         )}
-        {(activePage === 'products' || activePage === 'spices') && (
+        {isProducts && (
           <ProductsPage 
             onSelectProduct={setSelectedProduct} 
             onOpenQuote={(prod) => handleOpenQuote(prod)} 
           />
         )}
-        {activePage === 'agro' && (
+        {isAgro && (
           <AgroPage 
             onSelectProduct={setSelectedProduct} 
             onOpenQuote={(prod) => handleOpenQuote(prod)} 
           />
         )}
-        {(activePage === 'dehydrated' || activePage === 'dehydrated-products' || activePage === 'dehydrated-fruits-vegetables') && (
+        {isDehydrated && (
           <DehydratedPage 
             onSelectProduct={setSelectedProduct} 
             onOpenQuote={(prod) => handleOpenQuote(prod)} 
           />
         )}
-
-        {activePage === 'contact' && (
+        {isCertifications && (
+          <CertificationsPage 
+            onNavigate={handleNavigate} 
+            onOpenQuote={(prod) => handleOpenQuote(prod)} 
+          />
+        )}
+        {isContact && (
           <ContactPage 
             onOpenQuote={() => handleOpenQuote()} 
           />

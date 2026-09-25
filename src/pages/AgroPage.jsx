@@ -103,7 +103,7 @@ export default function AgroPage({ onSelectProduct, onOpenQuote }) {
               backdropFilter: 'blur(6px)'
             }}>
               <Sprout size={14} style={{ color: 'var(--gold)' }} />
-              100% Export Grade Agro Commodities • {productsList.length} Premium Grains & Pulses
+              Export Quality Indian Basmati Rice &amp; Bold Kabuli Chickpeas
             </span>
 
             <h1 style={{
@@ -115,8 +115,8 @@ export default function AgroPage({ onSelectProduct, onOpenQuote }) {
               letterSpacing: '-0.5px',
               color: '#FFFFFF'
             }}>
-              Explore Our Complete <br />
-              <span style={{ color: 'var(--gold)' }}>Agro Commodities Catalogue</span>
+              Premier Indian Exporter of <br />
+              <span style={{ color: 'var(--gold)' }}>Basmati Rice &amp; Kabuli Chickpeas</span>
             </h1>
 
             <p style={{
@@ -127,7 +127,7 @@ export default function AgroPage({ onSelectProduct, onOpenQuote }) {
               margin: '0 auto 36px',
               fontWeight: 500
             }}>
-              Direct farm-sourced Indian Basmati & Non-Basmati Rice, Milling Wheat, Yellow Corn (Maize), Malting Barley, Millets, Pulses & Oilseeds packaged for international bulk shipments.
+              Premium 1121 Steam &amp; Golden Sella Basmati Rice, long-grain parboiled non-basmati rice, and optical Sortex-cleaned jumbo bold Kabuli Chickpeas (Garbanzo Beans) packaged for international container shipments.
             </p>
 
             {/* Quick Stats Bar */}

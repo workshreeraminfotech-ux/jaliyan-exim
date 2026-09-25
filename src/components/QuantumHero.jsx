@@ -29,10 +29,10 @@ export default function QuantumHero({ onOpenQuote, onNavigate }) {
             Rajkot, Gujarat &middot; India
           </p>
 
-          <h1>Premium Agro Commodities &amp; Food Ingredients, Exported from India</h1>
+          <h1>Leading Indian Exporter of Spices, Basmati Rice &amp; Dehydrated Products</h1>
 
           <p className="site-hero__lede">
-            Spices, dehydrated vegetables, sun-dried fruits, sesame seeds, grains, and industrial ingredients &mdash; supplied to food manufacturers, processors, and private-label brands worldwide with certified purity and laboratory COA.
+            Pure whole spices, ground powders, 1121 steam Basmati rice, bold Kabuli chickpeas, and dehydrated onion &amp; garlic &mdash; supplied to global food manufacturers and importers with certified purity, NABL laboratory COA, and complete export compliance.
           </p>
 
           <div className="hero-actions">

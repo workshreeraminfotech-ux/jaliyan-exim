@@ -924,7 +924,7 @@ export default function AdminPanel() {
               {mainTab === 'categories' && 'Add, edit, rename, or delete subcategories for all product categories. Changes sync automatically.'}
               {mainTab === 'product_enquiries' && 'Review incoming container rate & product quotation requests from overseas buyers.'}
               {mainTab === 'contact_enquiries' && 'Manage business inquiries submitted via the Contact Us form.'}
-              {mainTab === 'certs' && 'Update official ISO, APEDA, FSSAI, Spices Board, FDA & Halal export credentials.'}
+              {mainTab === 'certs' && 'Update official APEDA, Spices Board, FSSAI & IEC export credentials.'}
             </p>
           </div>
 

@@ -1,15 +1,18 @@
 import React from 'react';
 import logoImg from '../assets/logo.webp';
-import { Mail, Phone, MapPin, Globe, ExternalLink } from 'lucide-react';
+import { Mail, Phone, MapPin, Globe, ExternalLink, Instagram, Linkedin, Facebook, MessageCircle } from 'lucide-react';
 
 export default function FooterSection({ onNavigate, onOpenQuote }) {
   const handleNav = (pageId) => {
-    if (pageId.startsWith('#')) {
+    const cleanId = typeof pageId === 'string' ? pageId.replace(/^#/, '').toLowerCase() : pageId;
+    if (typeof pageId === 'string' && pageId.startsWith('#')) {
       const el = document.querySelector(pageId);
-      if (el) el.scrollIntoView({ behavior: 'smooth' });
-      return;
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+        return;
+      }
     }
-    if (onNavigate) onNavigate(pageId);
+    if (onNavigate) onNavigate(cleanId);
   };
 
   return (
@@ -33,6 +36,50 @@ export default function FooterSection({ onNavigate, onOpenQuote }) {
           <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', lineHeight: 1.6, marginTop: '12px' }}>
             Premier merchant exporter from Gujarat, India. Supplying pure whole spices, ground culinary powders, dehydrated vegetables, and agro commodities worldwide.
           </p>
+
+          {/* Official Social Links */}
+          <div className="footer-social-links" style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '18px' }}>
+            <a 
+              href="https://www.instagram.com/jaliyan_exim/" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="footer-social-btn"
+              title="Follow Jaliyan Exim on Instagram"
+              aria-label="Instagram"
+            >
+              <Instagram size={16} />
+            </a>
+            <a 
+              href="https://www.linkedin.com/company/jaliyan-exim/" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="footer-social-btn"
+              title="Connect with Jaliyan Exim on LinkedIn"
+              aria-label="LinkedIn"
+            >
+              <Linkedin size={16} />
+            </a>
+            <a 
+              href="https://www.facebook.com/profile.php?id=61593712983337" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="footer-social-btn"
+              title="Follow Jaliyan Exim on Facebook"
+              aria-label="Facebook"
+            >
+              <Facebook size={16} />
+            </a>
+            <a 
+              href="https://api.whatsapp.com/send?phone=919726673414&text=Hi%20Jaliyan%20Exim!%20I%20would%20like%20to%20enquire%20about%20your%20export%20commodities." 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="footer-social-btn whatsapp"
+              title="Chat with Jaliyan Exim on WhatsApp"
+              aria-label="WhatsApp"
+            >
+              <MessageCircle size={16} />
+            </a>
+          </div>
         </div>
 
         {/* Products */}
@@ -41,7 +88,7 @@ export default function FooterSection({ onNavigate, onOpenQuote }) {
           <a href="#spices" onClick={(e) => { e.preventDefault(); handleNav('products'); }}>Spices &amp; Seasonings</a>
           <a href="#agro" onClick={(e) => { e.preventDefault(); handleNav('agro'); }}>Agro Commodities</a>
           <a href="#dehydrated" onClick={(e) => { e.preventDefault(); handleNav('dehydrated'); }}>Dehydrated Products</a>
-          <a href="#seeds" onClick={(e) => { e.preventDefault(); handleNav('agro'); }}>Sesame Seeds &amp; Peanuts</a>
+          <a href="#rice" onClick={(e) => { e.preventDefault(); handleNav('agro'); }}>Basmati Rice &amp; Chickpeas</a>
           <a href="#powders" onClick={(e) => { e.preventDefault(); handleNav('dehydrated'); }}>Food &amp; Spice Powders</a>
         </div>
 
@@ -49,9 +96,9 @@ export default function FooterSection({ onNavigate, onOpenQuote }) {
         <div className="footer-col">
           <h4>Company</h4>
           <a href="#products" onClick={(e) => { e.preventDefault(); handleNav('products'); }}>All Catalogues</a>
-          <a href="#about" onClick={(e) => { e.preventDefault(); handleNav('#about'); }}>About Jaliyan Exim</a>
-          <a href="#certifications" onClick={(e) => { e.preventDefault(); handleNav('#certifications'); }}>Quality &amp; Compliance</a>
-          <a href="#contact" onClick={(e) => { e.preventDefault(); handleNav('#contact'); }}>Request a Quote (RFQ)</a>
+          <a href="#about" onClick={(e) => { e.preventDefault(); handleNav('about'); }}>About Jaliyan Exim</a>
+          <a href="#certifications" onClick={(e) => { e.preventDefault(); handleNav('certifications'); }}>Quality &amp; Compliance</a>
+          <a href="#contact" onClick={(e) => { e.preventDefault(); handleNav('contact'); }}>Request a Quote (RFQ)</a>
         </div>
 
         {/* Contact */}

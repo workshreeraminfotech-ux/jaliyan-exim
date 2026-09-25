@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import logoImg from '../assets/logo.webp';
-import { Menu, X, ChevronDown, Sparkles, Leaf, Sprout, ArrowRight } from 'lucide-react';
+import { Menu, X, ChevronDown, Sparkles, Leaf, Sprout, ArrowRight, Instagram, Linkedin, Facebook, MessageCircle } from 'lucide-react';
 
 export default function Navbar({ activePage, onNavigate }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -30,15 +30,34 @@ export default function Navbar({ activePage, onNavigate }) {
   const handleNavClick = (pageId) => {
     setMobileMenuOpen(false);
     setDropdownOpen(false);
-    if (pageId.startsWith('#')) {
+
+    const cleanId = typeof pageId === 'string' ? pageId.replace(/^#/, '').toLowerCase() : pageId;
+
+    if (cleanId === 'certifications' || cleanId === 'quality' || cleanId === 'compliance') {
+      if (onNavigate) onNavigate('certifications');
+      return;
+    }
+
+    if (cleanId === 'contact') {
+      if (onNavigate) onNavigate('contact');
+      return;
+    }
+
+    if (cleanId === 'about') {
+      if (onNavigate) onNavigate('about');
+      return;
+    }
+
+    if (typeof pageId === 'string' && pageId.startsWith('#')) {
       const el = document.querySelector(pageId);
       if (el) {
         el.scrollIntoView({ behavior: 'smooth' });
         return;
       }
     }
+
     if (onNavigate) {
-      onNavigate(pageId);
+      onNavigate(cleanId);
     }
   };
 
@@ -56,11 +75,7 @@ export default function Navbar({ activePage, onNavigate }) {
     if (contactSection) {
       contactSection.scrollIntoView({ behavior: 'smooth' });
     } else if (onNavigate) {
-      onNavigate('home');
-      setTimeout(() => {
-        const el = document.getElementById('contact');
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
-      }, 300);
+      onNavigate('contact');
     }
   };
 
@@ -193,7 +208,7 @@ export default function Navbar({ activePage, onNavigate }) {
                     </div>
                     <div className="dropdown-item-text">
                       <span className="dropdown-item-title">Agro Commodities</span>
-                      <span className="dropdown-item-desc">Sesame seeds, peanuts, grains &amp; pulses</span>
+                      <span className="dropdown-item-desc">Basmati rice &amp; Kabuli chickpeas</span>
                     </div>
                   </a>
                 </div>
@@ -203,10 +218,10 @@ export default function Navbar({ activePage, onNavigate }) {
             {/* 3. Quality & Compliance */}
             <a 
               href="#certifications" 
-              className="nav-link"
+              className={`nav-link ${activePage === 'certifications' || activePage === 'quality' || activePage === 'compliance' ? 'active' : ''}`}
               onClick={(e) => {
                 e.preventDefault();
-                handleNavClick('#certifications');
+                handleNavClick('certifications');
               }}
             >
               Quality &amp; Compliance
@@ -215,10 +230,10 @@ export default function Navbar({ activePage, onNavigate }) {
             {/* 4. Contact */}
             <a 
               href="#contact" 
-              className="nav-link"
+              className={`nav-link ${activePage === 'contact' ? 'active' : ''}`}
               onClick={(e) => {
                 e.preventDefault();
-                handleNavClick('#contact');
+                handleNavClick('contact');
               }}
             >
               Contact
@@ -235,6 +250,25 @@ export default function Navbar({ activePage, onNavigate }) {
             <span>Request a Quote</span>
             <ArrowRight size={16} />
           </button>
+
+          {/* Mobile Menu Social Connections */}
+          <div className="mobile-menu-socials">
+            <span className="mobile-menu-socials-label">Connect with Us</span>
+            <div className="mobile-menu-socials-row">
+              <a href="https://api.whatsapp.com/send?phone=919726673414&text=Hi%20Jaliyan%20Exim!" target="_blank" rel="noopener noreferrer" className="mobile-social-icon whatsapp" title="WhatsApp" aria-label="WhatsApp">
+                <MessageCircle size={18} />
+              </a>
+              <a href="https://www.instagram.com/jaliyan_exim/" target="_blank" rel="noopener noreferrer" className="mobile-social-icon" title="Instagram" aria-label="Instagram">
+                <Instagram size={18} />
+              </a>
+              <a href="https://www.facebook.com/profile.php?id=61593712983337" target="_blank" rel="noopener noreferrer" className="mobile-social-icon" title="Facebook" aria-label="Facebook">
+                <Facebook size={18} />
+              </a>
+              <a href="https://www.linkedin.com/company/jaliyan-exim/" target="_blank" rel="noopener noreferrer" className="mobile-social-icon" title="LinkedIn" aria-label="LinkedIn">
+                <Linkedin size={18} />
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </header>

@@ -1,6 +1,6 @@
 import React from 'react';
 import spicesImg from '../assets/products/Turmeric Powder.webp';
-import cuminImg from '../assets/products/Cumin Seeds.webp';
+import basmatiImg from '../assets/agro/basmati_rice.jpg';
 import onionImg from '../assets/dehydrated/red_onion_powder.jpg';
 import { ArrowRight, Sparkles } from 'lucide-react';
 
@@ -17,9 +17,9 @@ export default function QuantumCategories({ onNavigate }) {
     {
       id: 'agro',
       title: 'Agro Commodities',
-      desc: 'Premium natural & hulled sesame seeds, groundnuts/peanuts, grains, and pulses sourced directly from certified farm belts.',
-      count: '15 products',
-      image: cuminImg,
+      desc: 'Prime Indian 1121 & Sella Basmati rice, long-grain rice varieties, and Sortex-cleaned bold Kabuli chickpeas.',
+      count: '5 products',
+      image: basmatiImg,
       pageId: 'agro'
     },
     {
@@ -36,10 +36,10 @@ export default function QuantumCategories({ onNavigate }) {
     <section className="page-section" id="products">
       <div className="page-inner">
         <div className="section-head">
-          <span className="section-label">What we supply</span>
-          <h2>Three certified ranges, built for global food trade</h2>
+          <span className="section-label">Export Product Portfolio</span>
+          <h2>Certified Indian Spices, Basmati Rice &amp; Dehydrated Products</h2>
           <p>
-            Every product is supplied against your written specification. Grades, cuts, purity, moisture, and packaging are confirmed per order, and a Certificate of Analysis accompanies each consignment.
+            Direct farm procurement from Gujarat and key Indian agricultural belts. Machine cleaned, Sortex graded, lab tested, and exported worldwide with custom packaging and guaranteed batch traceability.
           </p>
         </div>
 

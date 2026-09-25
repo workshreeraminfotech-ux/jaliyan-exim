@@ -37,7 +37,7 @@ export default function HeaderTop() {
                 <a href="https://api.whatsapp.com/send?phone=919726673414&text=Hi%20Jaliyan%20Exim!%20I%20would%20like%20to%20enquire%20about%20your%20export%20commodities." target="_blank" rel="noopener noreferrer" className="social-pill whatsapp" title="Chat on WhatsApp">
                   <MessageCircle size={13} />
                 </a>
-                <a href="https://www.facebook.com/profile.php?id=61578547394678" target="_blank" rel="noopener noreferrer" className="social-pill" title="Facebook">
+                <a href="https://www.facebook.com/profile.php?id=61593712983337" target="_blank" rel="noopener noreferrer" className="social-pill" title="Facebook">
                   <Facebook size={13} />
                 </a>
                 <a href="https://www.instagram.com/jaliyan_exim/" target="_blank" rel="noopener noreferrer" className="social-pill" title="Instagram">
@@ -81,7 +81,7 @@ export default function HeaderTop() {
             <a href="https://www.instagram.com/jaliyan_exim/" target="_blank" rel="noopener noreferrer" className="social-pill" title="Instagram">
               <Instagram size={13} />
             </a>
-            <a href="https://www.facebook.com/profile.php?id=61578547394678" target="_blank" rel="noopener noreferrer" className="social-pill" title="Facebook">
+            <a href="https://www.facebook.com/profile.php?id=61593712983337" target="_blank" rel="noopener noreferrer" className="social-pill" title="Facebook">
               <Facebook size={13} />
             </a>
             <a href="https://www.linkedin.com/company/jaliyan-exim/" target="_blank" rel="noopener noreferrer" className="social-pill" title="LinkedIn">

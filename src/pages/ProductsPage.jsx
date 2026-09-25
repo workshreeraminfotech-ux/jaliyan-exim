@@ -114,8 +114,8 @@ export default function ProductsPage({ onSelectProduct, onOpenQuote }) {
               letterSpacing: '-0.5px',
               color: '#FFFFFF'
             }}>
-              Explore Our Complete <br />
-              <span style={{ color: 'var(--gold)' }}>Indian Spices & Seasonings Catalogue</span>
+              Premier Indian Exporter of <br />
+              <span style={{ color: 'var(--gold)' }}>Whole Spices &amp; Ground Seasonings</span>
             </h1>
 
             <p style={{
@@ -126,7 +126,7 @@ export default function ProductsPage({ onSelectProduct, onOpenQuote }) {
               margin: '0 auto 36px',
               fontWeight: 500
             }}>
-              High-purity Indian ground spices, whole spices, seed spices, blended masalas, and exotic seasonings packed for global export markets.
+              High-purity whole spices (cumin seeds, turmeric fingers, dry red chilli, coriander, green cardamom) and finely ground spice powders certified by Spices Board India and APEDA for global food manufacturers.
             </p>
 
             {/* Quick Stats Bar */}

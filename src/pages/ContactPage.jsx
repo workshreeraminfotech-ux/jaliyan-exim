@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Phone, Mail, MapPin, MessageCircle, ArrowRight, Clock, Globe, Send } from 'lucide-react';
+import { Phone, Mail, MapPin, MessageCircle, ArrowRight, Clock, Globe, Send, Instagram, Linkedin, Facebook } from 'lucide-react';
 import { addEnquiry } from '../utils/adminStore';
 
 const countryCodes = ['+91', '+1', '+44', '+971', '+65', '+27', '+49', '+61', '+33', '+86', '+55', '+52'];
@@ -33,6 +33,27 @@ const contactCards = [
     sub: 'Export Hub — Near Mundra Port',
     href: '#map',
     color: '#0284C7'
+  },
+  {
+    icon: Instagram, label: 'Instagram',
+    value: '@jaliyan_exim',
+    sub: 'Daily Export Catalog & Updates',
+    href: 'https://www.instagram.com/jaliyan_exim/',
+    color: '#E1306C'
+  },
+  {
+    icon: Linkedin, label: 'LinkedIn',
+    value: 'Jaliyan Exim',
+    sub: 'Connect with our trade desk',
+    href: 'https://www.linkedin.com/company/jaliyan-exim/',
+    color: '#0A66C2'
+  },
+  {
+    icon: Facebook, label: 'Facebook',
+    value: 'Jaliyan Exim Official',
+    sub: 'Follow our official page',
+    href: 'https://www.facebook.com/profile.php?id=61593712983337',
+    color: '#1877F2'
   },
   {
     icon: Clock, label: 'Business Hours',

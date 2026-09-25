@@ -13,10 +13,8 @@ import { idbGet, idbSet, idbDel, idbClear } from './idbStore';
 
 import apedaLogo from '../assets/certificate/apeda.webp';
 import spicesBoardLogo from '../assets/certificate/spices board.webp';
-import fdaLogo from '../assets/certificate/fda.webp';
-import isoLogo from '../assets/certificate/iso.webp';
 import fssaiLogo from '../assets/certificate/fssai.webp';
-import halalLogo from '../assets/certificate/halal.webp';
+import iecLogo from '../assets/certificate/iec.svg';
 
 const INITIAL_CERTS = [
   { 
@@ -34,20 +32,6 @@ const INITIAL_CERTS = [
     logo: spicesBoardLogo
   },
   { 
-    id: 'cert-3',
-    name: 'US FDA Registered Facility', 
-    code: 'US FDA', 
-    tag: 'United States Food and Drug Administration Compliance',
-    logo: fdaLogo
-  },
-  { 
-    id: 'cert-4',
-    name: 'ISO 9001:2015 & HACCP', 
-    code: 'ISO 9001:2015', 
-    tag: 'Certified Quality Management & Food Safety Standards',
-    logo: isoLogo
-  },
-  { 
     id: 'cert-5',
     name: 'FSSAI License Approved', 
     code: 'FSSAI', 
@@ -55,11 +39,11 @@ const INITIAL_CERTS = [
     logo: fssaiLogo
   },
   { 
-    id: 'cert-6',
-    name: 'Halal Certified Export', 
-    code: 'HALAL', 
-    tag: 'Global Dietary Compliance for Gulf & Middle East Markets',
-    logo: halalLogo
+    id: 'cert-iec',
+    name: 'IEC (Importer Exporter Code)', 
+    code: 'DGFT / GOVT OF INDIA', 
+    tag: 'Directorate General of Foreign Trade, Ministry of Commerce & Industry',
+    logo: iecLogo
   }
 ];
 
@@ -145,6 +129,50 @@ function sanitizeDehydratedList(list) {
   return sanitized;
 }
 
+const INITIAL_AGRO_MAP = new Map(INITIAL_AGRO_PRODUCTS.map(p => [p.id, p]));
+
+function sanitizeAgroList(list) {
+  if (!Array.isArray(list) || list.length === 0) return INITIAL_AGRO_PRODUCTS;
+
+  // Filter out any products that are not Rice or Kabuli Chickpeas
+  const validProducts = list.filter(item => {
+    const id = (item.id || '').toLowerCase();
+    const cat = (item.category || item.cat || '').toLowerCase();
+    const title = (item.title || '').toLowerCase();
+    const isRice = cat.includes('rice') || title.includes('rice') || id.includes('rice') || id.includes('basmati');
+    const isChickpeas = cat.includes('chickpea') || title.includes('chickpea') || id.includes('chickpea') || id.includes('garbanzo');
+    return isRice || isChickpeas;
+  });
+
+  const sanitized = validProducts.map(item => {
+    const defaultItem = INITIAL_AGRO_MAP.get(item.id);
+    let img = item.image;
+    // Replace broken or foreign unsplash images with local verified images
+    if (!img || (typeof img === 'string' && (img.startsWith('/@fs') || img.includes('unsplash.com')))) {
+      if (item.title.toLowerCase().includes('chickpea') || item.id.includes('chickpea')) {
+        img = INITIAL_AGRO_PRODUCTS.find(p => p.id.includes('chickpea'))?.image;
+      } else if (item.title.toLowerCase().includes('sella') || item.id.includes('sella')) {
+        img = INITIAL_AGRO_PRODUCTS.find(p => p.id.includes('sella'))?.image;
+      } else {
+        img = INITIAL_AGRO_PRODUCTS[0]?.image;
+      }
+    }
+    return {
+      ...item,
+      image: img || (defaultItem ? defaultItem.image : '')
+    };
+  });
+
+  const existingIds = new Set(sanitized.map(p => p.id));
+  INITIAL_AGRO_PRODUCTS.forEach(p => {
+    if (!existingIds.has(p.id)) {
+      sanitized.push(p);
+    }
+  });
+
+  return sanitized;
+}
+
 function sanitizeProductList(list) {
   if (!Array.isArray(list) || list.length === 0) return INITIAL_PRODUCTS;
   
@@ -179,7 +207,20 @@ function sanitizeProductList(list) {
 
 function sanitizeCertList(list) {
   if (!Array.isArray(list) || list.length === 0) return INITIAL_CERTS;
-  return list.map(item => {
+  
+  // Strictly filter out removed certificates (US FDA, ISO, HALAL)
+  const filtered = list.filter(item => {
+    const id = (item.id || '').toLowerCase();
+    const name = (item.name || '').toLowerCase();
+    const code = (item.code || '').toLowerCase();
+    if (id === 'cert-3' || id === 'cert-4' || id === 'cert-6') return false;
+    if (name.includes('fda') || code.includes('fda')) return false;
+    if (name.includes('halal') || code.includes('halal')) return false;
+    if (name.includes('iso') || code.includes('iso') || name.includes('haccp')) return false;
+    return true;
+  });
+
+  const sanitized = filtered.map(item => {
     const defaultItem = INITIAL_CERTS_MAP.get(item.id);
     let logo = item.logo;
     if (!logo || (typeof logo === 'string' && logo.startsWith('/@fs'))) {
@@ -190,6 +231,16 @@ function sanitizeCertList(list) {
       logo: logo
     };
   });
+
+  // Ensure default initial certs exist (APEDA, Spices Board, FSSAI, IEC)
+  const existingIds = new Set(sanitized.map(c => c.id));
+  INITIAL_CERTS.forEach(c => {
+    if (!existingIds.has(c.id)) {
+      sanitized.push(c);
+    }
+  });
+
+  return sanitized;
 }
 
 export const DEFAULT_MAIN_CATEGORIES = [
@@ -241,6 +292,7 @@ function getInitialCategories() {
           parsed.spices = parsed.spices.filter(c => !c.toLowerCase().includes('dehydrated'));
         }
         parsed.dehydrated = DEHYDRATED_CATEGORIES;
+        parsed.agro = AGRO_CATEGORIES;
         return { ...INITIAL_CATEGORIES, ...parsed };
       }
     }
@@ -248,10 +300,23 @@ function getInitialCategories() {
   return INITIAL_CATEGORIES;
 }
 
+// Clear stale agro products cache in localStorage
+if (typeof window !== 'undefined') {
+  try {
+    const rawAgro = localStorage.getItem('trishu_agro_products');
+    if (rawAgro) {
+      const parsedAgro = JSON.parse(rawAgro);
+      if (Array.isArray(parsedAgro)) {
+        localStorage.setItem('trishu_agro_products', JSON.stringify(sanitizeAgroList(parsedAgro)));
+      }
+    }
+  } catch (e) {}
+}
+
 // IN-MEMORY FAST CACHE (Synchronous access for components)
 const memoryCache = {
   products: sanitizeProductList(getInitialList('trishu_products', INITIAL_PRODUCTS)),
-  agro: getInitialList('trishu_agro_products', INITIAL_AGRO_PRODUCTS),
+  agro: sanitizeAgroList(getInitialList('trishu_agro_products', INITIAL_AGRO_PRODUCTS)),
   dehydrated: sanitizeDehydratedList(getInitialList('jaliyan_dehydrated_products', INITIAL_DEHYDRATED_PRODUCTS)),
   sanitaryware: getInitialList('trishu_sanitaryware_products', INITIAL_SANITARYWARE_PRODUCTS),
   tiles: getInitialList('trishu_tiles_products', INITIAL_TILES_PRODUCTS),
@@ -609,7 +674,7 @@ export function deleteProduct(id) {
 
 // --- AGRO COMMODITIES STORE ---
 export function getAgroProducts() {
-  return memoryCache.agro;
+  return sanitizeAgroList(memoryCache.agro || []);
 }
 
 export function saveAgroProducts(list) {
